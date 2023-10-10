@@ -3,7 +3,7 @@
 #include <string.h>
 
 typedef struct Node{
-    char value[7];  
+    char value[8];  
     int next;
 }Node;
 
@@ -15,54 +15,67 @@ int main()
     {
         int amountOfElements, firstIndex, amountOfOperations;
         scanf("%d %d %d", &amountOfElements, &firstIndex, &amountOfOperations);
-        Node array[amountOfElements];
+        Node array[1000000];
         for(int step = 0; step < amountOfElements; ++step)
         {
             scanf("%s %d", array[step].value, &array[step].next);
         }
-        for (int step = 0; step < amountOfOperations; ++step)
+        if (amountOfOperations == 0)
         {
-            int typeOfOperation, workingIndex;
-            char newValue[7];
-            scanf("%d", &typeOfOperation);
-            if( typeOfOperation == 0)
+            printf("===\n");
+        }
+        else
+        {
+            for (int step = 0; step < amountOfOperations; ++step)
             {
-                scanf("%d %s", &workingIndex, newValue);
-                if(workingIndex < 0)
+                int typeOfOperation, workingIndex;
+                char newValue[8];
+                scanf("%d", &typeOfOperation);
+                if (typeOfOperation == 0)
                 {
-                    int newIndex;
-                    newIndex = amountOfElements++;
-                    strcpy(array[newIndex].value, newValue);
-                    array[newIndex].next = firstIndex;
-                    firstIndex = newIndex;
-                    printf("%d\n", amountOfElements);
+                    scanf("%d %s", &workingIndex, newValue);
+                    if(workingIndex == -1)
+                    {
+                        int newIndex;
+                        newIndex = amountOfElements++;
+                        strcpy(array[newIndex].value, newValue);
+                        array[newIndex].next = firstIndex;
+                        firstIndex = newIndex;
+                        printf("%d\n", amountOfElements-1);
+                    }
+                    else
+                    {
+                        int newIndex = amountOfElements++;
+                        array[newIndex].next = array[workingIndex].next;
+                        array[workingIndex].next = newIndex;
+                        strcpy(array[newIndex].value,newValue);
+                        printf("%d\n", newIndex);
+                    }
                 }
                 else
                 {
-                    int newIndex = amountOfElements++;
-                    array[newIndex].next = array[workingIndex].next;
-                    array[workingIndex].next = newIndex;
-                    strcpy(array[newIndex].value,newValue);
-                    printf("%d\n", newIndex);
+                    scanf("%d", &workingIndex);
+                    if (workingIndex == -1)
+                    {
+                        printf("%s\n", array[firstIndex].value);
+                        firstIndex = array[firstIndex].next;
+                    }
+                    else
+                    { 
+                        printf("%s\n", array[array[workingIndex].next].value);
+                        array[workingIndex].next = array[array[workingIndex].next].next;
+                    }
+                }
+                if (step == amountOfOperations - 1)
+                {
+                    printf("===\n");
                 }
             }
-            else
-            {
-                scanf("%d", &workingIndex);
-                array[workingIndex].next = array[array[workingIndex].next].next;
-            }
-            if (step == amountOfOperations - 1)
-            {
-                printf("===\n");
-            }
         }
-        int lastIndex;
         for (int step = firstIndex; step >= 0; step = array[step].next)
         {
             printf("%s\n", array[step].value);
-            lastIndex = step;
         }
-        printf("%s\n", array[lastIndex].value);
         printf("===\n");
     }
     return 0;
