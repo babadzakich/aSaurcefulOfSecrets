@@ -9,7 +9,7 @@ typedef struct Node{
 int main()
 {
     Node *first, *currentNode;
-    int amountOfNodes = 5;
+    int amountOfNodes = 2;
     for (int step = 0; step < amountOfNodes; ++step)
     {
         double currentValue;
@@ -25,9 +25,7 @@ int main()
         currentNode->next->value = currentValue;
         currentNode = currentNode->next;
     }
-    for(Node *step = first; step; step = step->next)
-    {
-        printf("%lf\n", step->value); 
-    }
+    free(first);
+    free(currentNode);
     return 0;
 }
