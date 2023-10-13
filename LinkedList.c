@@ -25,6 +25,10 @@ int main()
         currentNode->next->value = currentValue;
         currentNode = currentNode->next;
     }
+    for (Node *step = first; step; step = step->next)
+    {
+        printf("%lf\n", step->value);
+    }
     free(first);
     free(currentNode);
     return 0;
