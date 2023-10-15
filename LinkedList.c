@@ -2,18 +2,19 @@
 #include <stdlib.h>
 
 typedef struct Node{
-    double value;
+    int value;
     struct Node* next;
 }Node;
 
 int main()
 {
-    Node *first, *currentNode;
-    int amountOfNodes = 2;
+    Node *first, *currentNode, *temporaryNode;
+    int amountOfNodes;
+    scanf("%d", &amountOfNodes);
     for (int step = 0; step < amountOfNodes; ++step)
     {
-        double currentValue;
-        scanf("%lf", &currentValue);
+    int currentValue;
+        scanf("%d", &currentValue);
         if (step == 0)
         {
             first = malloc(sizeof(Node));
@@ -27,7 +28,18 @@ int main()
     }
     for (Node *step = first; step; step = step->next)
     {
-        printf("%lf\n", step->value);
+        if(step->value <10)
+        {
+            continue;
+        }
+        printf("%d\n", step->value);
+    }
+    Node* step = first;
+    while (step)
+    {
+        temporaryNode = step->next;
+        free(step);
+        step = temporaryNode;
     }
     free(first);
     free(currentNode);
