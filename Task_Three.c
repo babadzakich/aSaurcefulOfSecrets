@@ -17,32 +17,42 @@ typedef struct AgeStats_s {
 } AgeStats ;
 void calcStats ( const Label * array , int cnt , NameStats * oNames , AgeStats * oAges )
 {
-    int step = 0, namel = 0;
+    for(int step = 0; step < cnt; ++step)
+    {
+        int step2 = 0, nameLength = 0;
 
-    while (array.name[step++] != 0)
-    {
-        namel ++;
+        while (array[step].name[step2] != 0)
+        {
+            nameLength ++;
+            step2++;
+            if (nameLength > 10)
+            {
+                oNames->cntLong ++;
+                break;
+            }
+        }
+        if (array[step].age >= 18)
+        {
+            oAges->cntAdults ++;
+        }
+        else if (array[step].age < 14)
+        {
+            oAges->cntKids ++;
+        }
     }
-    if (namel > 10 )
-    {
-        oNames.cntLong ++;
-    }
-    if (array.age >= 18)
-    {
-        oAges.cntAdults ++;
-    }
-    else if (array.age < 14)
-    {
-        oAges.cntKids ++;
-    }
+    printf("names: total = %d\n", oNames->cntTotal);
+    printf("names: long = %d\n", oNames->cntLong);
+    printf("ages: total = %d\n", oAges->cntTotal);
+    printf("ages: adult = %d\n", oAges->cntAdults);
+    printf("ages: kid = %d", oAges->cntKids);
 }
 int main()
 {
     AgeStats agestat;
     NameStats namestat;
-    Label person;
+    Label persons[1001];
     int amount_of_names, step2 = 0, step3 = 0;
-    char Name[3];
+    char Name[4];
     scanf("%d", &amount_of_names);
     agestat.cntTotal = amount_of_names;
     agestat.cntAdults = 0;
@@ -51,9 +61,8 @@ int main()
     namestat.cntLong = 0;
     for (int step = 0; step < amount_of_names; ++step)
     {
-        scanf("%s %d %s", person.name, &person.age, Name);
-        calcStats (&person, amount_of_names, &namestat, &agestat);
+        scanf("%16s %d %s", persons[step].name, &persons[step].age, Name);
     }
-    printf("%s %s", namestat.);
+    calcStats (persons, amount_of_names, &namestat, &agestat);
     return 0;
 }

@@ -6,113 +6,83 @@ typedef struct Longnum_s {
     int number[3001];
 }LongNum;
 
-// int comparasion(LongNum firstNumber, int secondNumber)
-// {
-//     int IntFirstNumber = 0;
-// for (int step = 0; step < firstNumber.length; ++step)
-// {
-//     if (step == 0)
-//     {
-//         IntFirstNumber += firstNumber.number[step];
-//     }
-//     else
-//     {
-//         IntFirstNumber += pow(10, step)*firstNumber.number[step];
-//     }
-//     if (IntFirstNumber == secondNumber + 1)
-//     {
-//         return 1;
-//     }
-//     else 
-//     {
-//         return 0;
-//     }
-// }
-// }
-
-LongNum factorial_f(LongNum factorial, int IntMultiplier)
+void factorial_f(LongNum *factorial, int IntMultiplier, int *stepLength)
 {
-    int bit_perenosa = 0, temporary_number, step = 0;
+    int step = 0, result_index, multiply_result;
     LongNum result, multiplier;
     multiplier.length = 0;
-    result.length = factorial.length;
     do
     {
-        multiplier.number[step++] = IntMultiplier % 10;
+        multiplier.number[step] = IntMultiplier % 10;
         IntMultiplier /= 10;
         multiplier.length ++;
-    } while (IntMultiplier % 10 != 0);
+        step ++;
+    } while (IntMultiplier % 10 != 0 || IntMultiplier / 10 > 0);
+    result.length = factorial->length + multiplier.length;
+    // if (factorial->length < multiplier.length + *stepLength)
+    // {
+    //     factorial->length += multiplier.length - *stepLength + 1;
+    //     *stepLength = multiplier.length;
+    // }
+    // if (multiplier.length == 1)
+    // {
+    //     for (int step = 0; step < factorial->length-1; step++)
+    //     {
+    //         factorial->number[step] *= multiplier.number[0];
+    //         factorial->number[step + 1] = (factorial->number[step]/10);
+    //         factorial->number[step] %= 10;
+    //     }
+        
+    // }
+
     for (int step = 0; step < 3001; step++)
     {
         result.number[step] = 0;
     }
     for(int step = 0; step < multiplier.length; ++step)
     {
-        for (int step2 = 0; step2 < factorial.length; ++step2)
+        for (int step2 = 0; step2 < factorial->length; ++step2)
         {
-            temporary_number = result.number[step2 + step]; //заменяем чтобы не было ошибок ниже
-            result.number[step2 + step] = (temporary_number + factorial.number[step2] * multiplier.number[step] + bit_perenosa) % 10;
-            bit_perenosa = (temporary_number + factorial.number[step2] * multiplier.number[step] + bit_perenosa) / 10;
+            result.number[step + step2] += factorial->number[step2] * multiplier.number[step];
+            result.number[step + step2 + 1] = result.number[step + step2 + 1] + result.number[step + step2]/10;
+            //printf("2: %d\n", factorial->number[step + step2 + 1]);
+            result.number[step + step2] %= 10;
+            //printf("3: %d\n", factorial->number[step + step2]);
         }
-        if (bit_perenosa != 0)
-        {
-            result.number[result.length++] = bit_perenosa % 10;
-            bit_perenosa /= 10;
-        }
+        
     }
-    return result;
+    for (int step = 0; step < result.length; ++step)
+    {
+        factorial->number[step] = result.number[step];
+        factorial->length = result.length;
+    }
 }
-
-// LongNum sum(LongNum number)
-// {
-//     LongNum one;
-//     one.number[0] = 1;
-//     int bitPerenosa = 0;
-//     for (int step = 0; step < number.length; step ++)
-//     {
-//         if(step == 0)
-//         {
-//             bitPerenosa = (number.number[step] + 1) / 10;
-//             number.number[step] = (number.number[step] + 1) % 10;
-//         }
-//         else 
-//         {
-//             if (bitPerenosa != 0)
-//             {
-//                 int temporalNumber = number.number[step];
-//                 number.number[step] = (bitPerenosa + temporalNumber) % 10;
-//                 bitPerenosa = (bitPerenosa + temporalNumber) / 10;
-//             }
-//             else{
-//                 break;
-//             }
-//         }
-//     }
-//     return number;
-// }
 
 int main()
 {
     LongNum factorial;
     int factorial_limit;
+    
     factorial.length = 1;
     factorial.number[0] = 1;
-    //factorial = factorial_f(factorial, factorial_step);
+    
     scanf("%d", &factorial_limit);
+    
     if (factorial_limit == 0)
     {
         printf("1");
     }
     else{
+        int stepLength = 1;
         for (int step = 1; step <= factorial_limit; ++step)
         {
-            factorial = factorial_f(factorial, step);
+            factorial_f(&factorial, step, &stepLength);
         }
-        // while(!comparasion(factorial_step, factorial_limit))
-        // {
-        //     factorial = factorial_f(factorial, factorial_step);
-        //     factorial_step = sum(factorial_step);
-        // }
+        
+        while (factorial.number[factorial.length - 1] == 0)
+        {
+            factorial.length --;
+        }
         for (int step = factorial.length-1; step >= 0; --step)
         {
             printf("%d",factorial.number[step]);
