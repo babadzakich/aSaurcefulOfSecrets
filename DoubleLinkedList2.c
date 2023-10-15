@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 const int addBehind = -1, addAfter = 1, deletion = 0;
+
 typedef struct Node{
     int value;
     int next;
@@ -40,14 +42,14 @@ void addBehindF(Node *array, int *newIndex)
     printf("%d\n", *newIndex);
 }
 
-Node array[1000001];
- 
+Node array0[1000001];
+Node* array = array0 + 1;
 int main()
 {
     int amountOfTests;
     scanf("%d", &amountOfTests);
     for (int test = 0; test < amountOfTests; test++)
-    {
+    {//
         int amountOfNodes, firstNode, lastNode, amountOfOperations;
         scanf("%d %d %d %d", &amountOfNodes, &firstNode, &lastNode, &amountOfOperations);
         array[-1].previous = lastNode;
