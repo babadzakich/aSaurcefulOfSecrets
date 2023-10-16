@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/Алина/Desktop/проекты/six_pack_repository",
-      "program": "c:/Users/Алина/Desktop/проекты/six_pack_repository/build/Debug/outDebug",
+      "cwd": "c:/Users/Алина/Desktop/cProjects/six_pack_repository",
+      "program": "c:/Users/Алина/Desktop/cProjects/six_pack_repository/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
