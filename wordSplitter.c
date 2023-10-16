@@ -57,51 +57,41 @@ void tokensSplit ( Tokens *tokens , const char * str , const char * delims )
     else
     {
         tokens->arr = malloc(sizeof(char*) * tokens->num);
-        int startOfWord = -1, endOfWord, step = 0, wordCounter = 0, letterCounter=0, isLetterFound = 0;
-        //char* word = (char*)malloc(sizeof(char)*1000003);
+        int startOfWord = -1, endOfWord = -1, step = 0, wordCounter = 0, isLetterFound = 0;
+        
         while(str[step] != '\0')
         {
             int isDelimeter = isSymbolDelimiter(str[step], delims);
             if(!isLetterFound && !isDelimeter)
             {
                 isLetterFound = 1;
-                startOfWord = step;
-                //word[letterCounter++] = str[step];
+                if (startOfWord == -1)
+                {
+                    startOfWord = step;
+                }
+                
+                
             }
             else if(isLetterFound && isDelimeter)
             {
                 isLetterFound = 0;
-                tokens->arr[wordCounter] = (char*)malloc(sizeof(char) * letterCounter);
+                
+                //tokens->arr[wordCounter] = (char*)malloc(sizeof(char) * letterCounter);
                 endOfWord = step;
-
-                // for(int step2 = 0; step2 < letterCounter; step2++)
-                // {
-                //     tokens->arr[wordCounter][step2] = word[step2];
-                // }
                 tokens->arr[wordCounter++] = lineSubstraction(str, &startOfWord, &endOfWord);
-                //wordCounter++;
-                //letterCounter = 0;
-                //free(word);
+                startOfWord = -1;
             }
-            // else if (isLetterFound && !isDelimeter)
-            // {
-            //     //word[letterCounter++] = str[step];
-            // }
+            
             ++step;
         }
         if(isLetterFound)
         {
-            tokens->arr[wordCounter] = (char*)malloc(sizeof(char) * letterCounter+1);
-            // for(int step = 0; step < strlen(word); step++)
-            // {
-            //     tokens->arr[wordCounter][step] = word[step];
-            // }
-            // wordCounter++;
-            //strcpy(tokens->arr[wordCounter++], word);
+            //tokens->arr[wordCounter] = (char*)malloc(sizeof(char) * letterCounter+1);
+            
             endOfWord = step;
             tokens->arr[wordCounter++] = lineSubstraction(str, &startOfWord, &endOfWord);
         }
-        //free(word);
+        
     }
 }
 
@@ -142,7 +132,7 @@ int main()
         for(int step = 0; step < tokens.num; ++step)
         {
             fprintf(stdout, "%s\n", tokens.arr[step]);
-            //fprintf(stdout, "%s\n", tokens.arr[step]);
+            
         }
     }
     
