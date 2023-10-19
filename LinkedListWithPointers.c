@@ -15,9 +15,8 @@ typedef Node List ;
 //инициализирует поля структуры *list значениями для пустого списка
 void initList ( List * list )
 {
-    list = malloc(sizeof(Node));
-    list->next = list;
     list->prev = list;
+    list->next = list;
 }
 
 //создаёт новый узел со значением ptr и вставляет его после узла node
@@ -38,15 +37,11 @@ Node * addAfter ( Node * node , void * ptr )
 Node * addBefore ( Node * node , void * ptr )
 {
     Node *newNode = (Node*)malloc(sizeof(Node)); 
-
-    newNode->next = node;
-    printf("====\n");
-    node->prev->next = newNode;
-    printf("====\n");
-    node->prev = newNode;
-    newNode->value = ptr;
-    printf("====\n");
     newNode->prev = node->prev;
+    node->prev->next = newNode;
+    newNode->next = node;
+    node->prev = newNode; 
+    newNode->value = ptr;  
     return newNode;
 }
 
@@ -59,18 +54,20 @@ void * erase ( Node * node )
     free(node);
     return value;
 }
-Node* array0[100001];
-Node** array = array0 + 1;
+
 int main()
 {
-    // freopen("input.txt", "r", stdin);
-    // freopen("output.txt", "w", stdout);
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
 
+    Node** array0 = (Node**)malloc(sizeof(Node*)*100001);
+    Node** array = (array0 + 1);
+    
     int Tests, amountOfOperations;
     scanf("%d", &Tests);
     for (int test = 1; test <= Tests; test++)
     {
-        List *linkedList;
+        List *linkedList = (List*)malloc(sizeof(List));
         initList(linkedList);
         array[-1] = linkedList;
         int amountOfNodesInArray = 0;
@@ -80,7 +77,7 @@ int main()
         {
             int typeOfOperation, operationalIndex;
             scanf("%d %d", &typeOfOperation, &operationalIndex);
-            Node *currentNode = array[operationalIndex];
+            Node *currentNode = array0[operationalIndex+1];
             //scanf("%d", &value);
             if (typeOfOperation == additionAfter)
             {
@@ -90,7 +87,6 @@ int main()
                 scanf("%d", &value);
                 *((int*)valueP) = value;
                 array[amountOfNodesInArray++] = addAfter(currentNode, valueP);
-                 
             }
             else if (typeOfOperation == additionBefore)
             {
@@ -99,15 +95,13 @@ int main()
                 scanf("%d", &value);
                 *((int*)valueP) = value;
                 array[amountOfNodesInArray++] = addBefore(currentNode, valueP);
-                
             }
             else
             {
                 free(erase(currentNode));
             }
         }
-        printf("===\n");
-        for (Node* step = linkedList->next; step->next != linkedList; step = step->next)
+        for (Node* step = linkedList->next; step != linkedList; step = step->next)
         {
             printf("%d\n", *((int*)step->value));
         }
@@ -119,8 +113,9 @@ int main()
             free(step);
             step = temporaryNode;
         }
+        free(linkedList);
     }
-    // fclose(stdin);
-    // fclose(stdout);
+    fclose(stdin);
+    fclose(stdout);
     return 0;
 }

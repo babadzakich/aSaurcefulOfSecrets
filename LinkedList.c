@@ -19,21 +19,21 @@ int main()
         {
             first = malloc(sizeof(Node));
             first->value = currentValue;
+            first->next = NULL;
             currentNode = first;
             continue;
         }
         currentNode->next = malloc(sizeof(Node));
         currentNode->next->value = currentValue;
+        currentNode->next->next = NULL;
         currentNode = currentNode->next;
     }
+    printf("===\n");
     for (Node *step = first; step; step = step->next)
     {
-        if(step->value <10)
-        {
-            continue;
-        }
         printf("%d\n", step->value);
     }
+    printf("===\n");
     Node* step = first;
     while (step)
     {
