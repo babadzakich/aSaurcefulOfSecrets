@@ -60,9 +60,14 @@ int main()
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
 
-    Node** array0 = (Node**)malloc(sizeof(Node*)*100001);
+    Node** array0 = (Node**)malloc(sizeof(Node*)*1000001);
     Node** array = (array0 + 1);
     
+    for (int step = 0; step < 1000001; ++step)
+    {
+        array0[step] = NULL;
+    }
+
     int Tests, amountOfOperations;
     scanf("%d", &Tests);
     for (int test = 1; test <= Tests; test++)
@@ -106,15 +111,26 @@ int main()
             printf("%d\n", *((int*)step->value));
         }
         printf("===\n");
+        // for(int step = 0; step < 1000001; ++step)
+        // {
+        //     if (array0[step] != NULL)
+        //     {
+        //         free(array0[step]);
+        //         array0[step] = NULL;
+        //     }
+        // }
         Node* step = linkedList->next;
         while(step != linkedList)
         {
             Node *temporaryNode = step->next;
+            free(step->value);
             free(step);
             step = temporaryNode;
         }
         free(linkedList);
+
     }
+    free(array0);
     fclose(stdin);
     fclose(stdout);
     return 0;
